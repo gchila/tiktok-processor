@@ -56,7 +56,7 @@ def getTranscript(mp3_file_path):
     model="whisper-1", 
     file=audio_file
     )
-    print(transcription.text)
+    print(transcription)
 
     transcript_string = transcription.text
 
@@ -86,18 +86,13 @@ def processVideo(video_url):
             print("An unexpected error occured:")
             traceback.print_exc()
 
-    transcript_file_name = f"{file_uuid}_transcript.txt"
-    transcript_file_path = os.path.join(transcript_directory, transcript_file_name)
-    if os.path.exists(transcript_file_path):
-        print("Using cached transcript file...")
-    else:
-        print("Using transcription API...")
-        try:
-            return getTranscript(mp3_file_path)
-        except:
-            return
-            print("An unexpected error occured:")
-            traceback.print_exc()
+    
+    try:
+        return getTranscript(mp3_file_path)
+    except:
+        print("An unexpected error occured:")
+        traceback.print_exc()
+        return
 
 
 def processChannel():
@@ -125,7 +120,8 @@ def processChannel():
                 if video_desc and video_transcript:
 
                     pdf.add_page()
-                    pdf.set_font(family='Arial',size=8)
+                    pdf.add_font('Arial', '', 'c:/windows/fonts/arial.ttf', uni=True)  # added line
+                    pdf.set_font('Arial', '', 8)
                     
                     pdf.cell(0, 10, "Description de la vidéo", 0, 1, 'C')
                     for sentence in video_desc.split('.'):
