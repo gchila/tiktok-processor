@@ -33,8 +33,11 @@ def makeAudioFile(video_url, mp3_file_path):
                 "isAudioOnly": "true"
             }
     )
+    print(mp3_download_response.text)
+    exit()
     mp3_download_response.raise_for_status()
     mp3_download_data = mp3_download_response.json()
+    
     mp3_download_url = mp3_download_data['url']
     
     mp3_audio_response = requests.get(mp3_download_url)
